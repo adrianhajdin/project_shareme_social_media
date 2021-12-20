@@ -10,11 +10,10 @@ import Spinner from './Spinner';
 const CreatePin = ({ user }) => {
   const [title, setTitle] = useState('');
   const [about, setAbout] = useState('');
-  const [destination, setDestination] = useState();
   const [loading, setLoading] = useState(false);
+  const [destination, setDestination] = useState();
   const [fields, setFields] = useState();
   const [category, setCategory] = useState();
-  const [savingPin, setSavingPin] = useState(false);
   const [imageAsset, setImageAsset] = useState();
   const [wrongImageType, setWrongImageType] = useState(false);
 
@@ -30,7 +29,6 @@ const CreatePin = ({ user }) => {
         .upload('image', selectedFile, { contentType: selectedFile.type, filename: selectedFile.name })
         .then((document) => {
           setImageAsset(document);
-          // console.log('The image was uploaded!', document);
           setLoading(false);
         })
         .catch((error) => {
@@ -43,15 +41,7 @@ const CreatePin = ({ user }) => {
   };
 
   const savePin = () => {
-    if (
-      title !== ''
-      && about !== ''
-      && destination !== ''
-      && imageAsset?._id !== undefined
-      && category !== ''
-    ) {
-      setSavingPin(true);
-
+    if (title && about && destination && imageAsset?._id && category) {
       const doc = {
         _type: 'pin',
         title,
@@ -72,7 +62,6 @@ const CreatePin = ({ user }) => {
         category,
       };
       client.create(doc).then(() => {
-        setSavingPin(false);
         navigate('/');
       });
     } else {
@@ -151,18 +140,16 @@ const CreatePin = ({ user }) => {
             placeholder="Add your title"
             className="outline-none text-2xl sm:text-3xl font-bold border-b-2 border-gray-200 p-2"
           />
-          {
-           user && (
-           <div className="flex gap-2 mt-2 mb-2 items-center bg-white rounded-lg ">
-             <img
-               src={user.image}
-               className="w-10 h-10 rounded-full"
-               alt="user-profile"
-             />
-             <p className="font-bold">{user.userName}</p>
-           </div>
-           )
-         }
+          {user && (
+            <div className="flex gap-2 mt-2 mb-2 items-center bg-white rounded-lg ">
+              <img
+                src={user.image}
+                className="w-10 h-10 rounded-full"
+                alt="user-profile"
+              />
+              <p className="font-bold">{user.userName}</p>
+            </div>
+          )}
           <input
             type="text"
             value={about}
@@ -201,7 +188,7 @@ const CreatePin = ({ user }) => {
                 onClick={savePin}
                 className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none"
               >
-                {savingPin ? 'Saving Pin...' : 'Save Pin'}
+                Save Pin
               </button>
             </div>
           </div>

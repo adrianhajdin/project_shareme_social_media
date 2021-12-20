@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { TopNavbar, Feed, PinDetail, CreatePin, Search } from '../components';
+import { Navbar, Feed, PinDetail, CreatePin, Search } from '../components';
 
 const Pins = ({ user }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,7 +9,7 @@ const Pins = ({ user }) => {
   return (
     <div className="px-2 md:px-5">
       <div className="bg-gray-50">
-        <TopNavbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} user={user && user} />
+        <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} user={user && user} />
       </div>
       <div className="h-full">
         <Routes>
