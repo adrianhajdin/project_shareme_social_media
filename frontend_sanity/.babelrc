@@ -1,1 +1,4 @@
-
+{
+    "presets": ["@babel/preset-react"]
+  }
+  

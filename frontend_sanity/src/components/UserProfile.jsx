@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { useParams, useNavigate } from 'react-router-dom';
-import { GoogleLogout } from 'react-google-login';
+import { googleLogout } from '@react-oauth/google';
 
 import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/data';
 import { client } from '../client';
@@ -19,7 +19,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
 
-  const User = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
+  const User = localStorage.getItem('user') !== 'undefined' ? localStorage.getItem('user') : localStorage.clear();
 
   useEffect(() => {
     const query = userQuery(userId);
@@ -49,7 +49,6 @@ const UserProfile = () => {
 
     navigate('/login');
   };
-
   if (!user) return <Spinner message="Loading profile" />;
 
   return (
@@ -72,22 +71,17 @@ const UserProfile = () => {
             {user.userName}
           </h1>
           <div className="absolute top-0 z-1 right-0 p-2">
-            {userId === User.googleId && (
-              <GoogleLogout
-                clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
-                render={(renderProps) => (
-                  <button
-                    type="button"
-                    className=" bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
-                    onClick={renderProps.onClick}
-                    disabled={renderProps.disabled}
-                  >
-                    <AiOutlineLogout color="red" fontSize={21} />
-                  </button>
-                )}
-                onLogoutSuccess={logout}
-                cookiePolicy="single_host_origin"
-              />
+            {userId === User && (
+            <button
+              type="button"
+              className=" bg-white p-2 rounded-full cursor-pointer outline-none shadow-md"
+              onClick={() => {
+                logout();
+                googleLogout();
+              }}
+            >
+              <AiOutlineLogout color="red" fontSize={21} />
+            </button>
             )}
           </div>
         </div>
@@ -117,14 +111,12 @@ const UserProfile = () => {
         <div className="px-2">
           <MasonryLayout pins={pins} />
         </div>
-
         {pins?.length === 0 && (
         <div className="flex justify-center font-bold items-center w-full text-1xl mt-2">
           No Pins Found!
         </div>
         )}
       </div>
-
     </div>
   );
 };
