@@ -49,6 +49,7 @@ const UserProfile = () => {
 
     navigate('/login');
   };
+
   if (!user) return <Spinner message="Loading profile" />;
 
   return (
@@ -111,12 +112,14 @@ const UserProfile = () => {
         <div className="px-2">
           <MasonryLayout pins={pins} />
         </div>
+
         {pins?.length === 0 && (
         <div className="flex justify-center font-bold items-center w-full text-1xl mt-2">
           No Pins Found!
         </div>
         )}
       </div>
+
     </div>
   );
 };
