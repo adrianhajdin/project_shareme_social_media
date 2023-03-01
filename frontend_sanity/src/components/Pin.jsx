@@ -30,6 +30,7 @@ const Pin = ({ pin }) => {
   alreadySaved = alreadySaved?.length > 0 ? alreadySaved : [];
 
   const savePin = (id) => {
+    if (!savingPost) {
     if (alreadySaved?.length === 0) {
       setSavingPost(true);
 
@@ -50,7 +51,7 @@ const Pin = ({ pin }) => {
           setSavingPost(false);
         });
     }
-  };
+  }};
 
   return (
     <div className="m-2">
