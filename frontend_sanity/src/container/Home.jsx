@@ -14,10 +14,10 @@ const Home = () => {
   const [user, setUser] = useState();
   const scrollRef = useRef(null);
 
-  const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
+  const userInfo = localStorage.getItem('user') !== 'undefined' ? localStorage.getItem('user') : localStorage.clear();
 
   useEffect(() => {
-    const query = userQuery(userInfo?.googleId);
+    const query = userQuery(userInfo);
 
     client.fetch(query).then((data) => {
       setUser(data[0]);
@@ -25,7 +25,8 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    scrollRef.current.scrollTo(0, 0);
+    scrollRef.current.scrollTo({ top: 0,
+      behavior: 'smooth' });
   });
 
   return (
@@ -40,7 +41,7 @@ const Home = () => {
             <img src={logo} alt="logo" className="w-28" />
           </Link>
           <Link to={`user-profile/${user?._id}`}>
-            <img src={user?.image} alt="user-pic" className="w-9 h-9 rounded-full " />
+            <img src={user?.image} alt="user-pic" className="w-9 h-9 rounded-full" />
           </Link>
         </div>
         {toggleSidebar && (

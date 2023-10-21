@@ -82,7 +82,7 @@ const PinDetail = ({ user }) => {
                 </a>
               </div>
               <a href={pinDetail.destination} target="_blank" rel="noreferrer">
-                {pinDetail.destination?.slice(8)}
+                {pinDetail.destination?.slice(8, -25)}
               </a>
             </div>
             <div>
