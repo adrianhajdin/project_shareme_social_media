@@ -1,4 +1,5 @@
 import React from 'react';
+import { gapi } from "gapi-script";
 import GoogleLogin from 'react-google-login';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
@@ -8,6 +9,18 @@ import logo from '../assets/logowhite.png';
 import { client } from '../client';
 
 const Login = () => {
+   
+// run command npm install gapi-script
+  
+  gapi.load("client:auth2", () => {
+    gapi.client.init({
+      clientId:
+//       put your clientId
+        "********.apps.googleusercontent.com",
+      plugin_name: "chat",
+    });
+  });
+  
   const navigate = useNavigate();
   const responseGoogle = (response) => {
     localStorage.setItem('user', JSON.stringify(response.profileObj));
