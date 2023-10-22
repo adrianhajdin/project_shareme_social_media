@@ -4,22 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
-
+import jwt_decode from "jwt-decode";
 import { client } from '../client';
 
 const Login = () => {
   const navigate = useNavigate();
   const responseGoogle = (response) => {
-    localStorage.setItem('user', JSON.stringify(response.profileObj));
-    const { name, googleId, imageUrl } = response.profileObj;
+    localStorage.setItem("user", JSON.stringify(response));
+    var decodedHeader = jwt_decode(response.credential);
+    const { name, sub, picture } = decodedHeader;
     const doc = {
-      _id: googleId,
-      _type: 'user',
+      _id: sub,
+      _type: "user",
       userName: name,
-      image: imageUrl,
+      image: picture,
     };
     client.createIfNotExists(doc).then(() => {
-      navigate('/', { replace: true });
+      navigate("/", { replace: true });
     });
   };
 
