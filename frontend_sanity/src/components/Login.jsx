@@ -1,5 +1,6 @@
 import React from 'react';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import shareVideo from '../assets/share.mp4';
@@ -10,13 +11,14 @@ import { client } from '../client';
 const Login = () => {
   const navigate = useNavigate();
   const responseGoogle = (response) => {
-    localStorage.setItem('user', JSON.stringify(response.profileObj));
-    const { name, googleId, imageUrl } = response.profileObj;
+    const decoded = jwt_decode(response.credential);
+    localStorage.setItem('user', JSON.stringify(decoded));
+    const { name, sub, picture } = decoded;
     const doc = {
-      _id: googleId,
+      _id: sub,
       _type: 'user',
       userName: name,
-      image: imageUrl,
+      image: picture,
     };
     client.createIfNotExists(doc).then(() => {
       navigate('/', { replace: true });
@@ -56,7 +58,7 @@ const Login = () => {
               )}
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
-              cookiePolicy="single_host_origin"
+              // cookiePolicy="single_host_origin"
             />
           </div>
         </div>
